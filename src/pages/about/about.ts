@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AlertController, NavController } from 'ionic-angular';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { Camera, CameraOptions ,PictureSourceType} from '@ionic-native/camera';
+import { Camera, PictureSourceType} from '@ionic-native/camera';
 import { DatabaseProvider } from '../../providers/database/database';
 import { HomePage } from '../home/home';
 import moment from 'moment';
@@ -20,7 +19,7 @@ export class AboutPage {
     caption: ''
   }
 
-  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public camera: Camera, private sqlite: SQLite, private db: DatabaseProvider) {
+  constructor(private alertCtrl: AlertController, public navCtrl: NavController, public camera: Camera, private db: DatabaseProvider) {
 
   }
   ngOnInit(){
@@ -60,19 +59,21 @@ export class AboutPage {
   // custom file upload
   // using file reader
   // in case user system not getting cordova
-  fileProgress(event) {
-      if (event.target.files && event.target.files[0]) {
+
+  //<!------------- Why this metod is not working -------------------->
+
+  /* fileDirectUpload(e) {
+      if (e.target.files && e.target.files[0]) {
+        let file = e.target.files[0];
         var reader = new FileReader();
-  
-        reader.readAsDataURL(event.target.files[0]); // read file as data url
-  
+        reader.readAsDataURL(file); // read file as data url
         reader.onload = (event) => { // called once readAsDataURL is completed
           this.validateThese.base64Image = event.target.result;
         }
       }else{
         return;
       }
-  }
+  } */
 
   // save new upload
   async validate(){
