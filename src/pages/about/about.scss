@@ -1,0 +1,52 @@
+page-about {
+    @import '../../styles.scss';
+    .fullBody{
+        padding: 5px;
+        .addingPlace{
+            display: flex;
+            .leftSide{
+                text-align: center;
+                background: $color-ashmetics;
+                width: calc(100% - 85px);
+                border-radius: 5px;
+                max-height: 180px;
+                margin-right: 10px;
+                label{
+                    input{
+                        display: none;
+                    }
+                    img{
+                        height: 100%;
+                    }
+                }
+            }
+            .rightSide{
+                width: 85px;
+                button{
+                    padding: 30px;
+                    border-radius: 5px;
+                    &:nth-child(1){
+                        background: $color-peach-bg;
+                        margin-bottom: 10px;
+                    }
+                    &:nth-child(2){
+                        background: $color-purple-bg;
+                    }
+                    ion-icon{
+                        color: $color-white;
+                        font-size: 25px;
+                    }
+                }
+            }
+        }
+        .captionPlace{
+            .item{
+                padding: 0;
+            }
+            ion-icon{
+                color: $color-ash;
+            }
+        }
+    }
+
+}

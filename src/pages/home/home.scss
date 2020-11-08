@@ -1,0 +1,36 @@
+page-home {
+    @import '../../styles.scss';
+    .images{
+        padding: 5px;
+        display: grid;
+        grid-template-columns: auto auto auto;
+        grid-gap: 5px;
+        .eachBox{
+            position: relative;
+            p{
+                background: rgba(0,0,0,.5);
+                padding: 3px;
+                text-align: center;
+                max-height: 23px;
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                right: 0;
+                width: 100%;
+                color: $color-white;
+            }
+        }
+    }
+    .noImage{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        text-align: center;
+        img{
+            width: 100%;
+            display: inline-block;
+        }
+    }
+}

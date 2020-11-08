@@ -1,0 +1,27 @@
+<ion-header no-border>
+  <ion-toolbar color="white">
+    <ion-title color="appprimary">Galary</ion-title>
+    <button ion-button icon-only menuToggle right (click)="toAddImage()"><ion-icon name="add-circle" role="img"></ion-icon></button>
+    <button ion-button icon-only menuToggle right (click)="viewMode = (viewMode == 'grid') ? 'list' : 'grid'"><ion-icon name="grid" role="img"></ion-icon></button>
+    <button ion-button icon-only menuToggle right (click)="viewMode = (viewMode == 'grid') ? 'list' : 'grid'"><ion-icon name="list" role="img"></ion-icon></button>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <!-- All Images in grid mode -->
+  <div class="images" *ngIf="allImages.length > 0 && viewMode == 'grid'">
+    <img *ngFor="let data of allImages" [src]="data.image" />
+  </div>
+  <!-- All images in list -->
+  <ion-list *ngIf="allImages.length > 0 && viewMode == 'list'">
+    <ion-item *ngFor="let data of allImages; let i = index">
+      <ion-thumbnail item-start><img [src]="data.image"></ion-thumbnail>
+      <h2>{{data.caption}}</h2>
+      <p>{{dateFormater(data.added_at, 'll')}}</p>
+      <button ion-button clear icon-only item-end (click)="deleteImage(i)"><ion-icon name="trash" color="danger"></ion-icon></button>
+    </ion-item>
+  </ion-list>
+  <!-- No images found -->
+  <div class="noImage" *ngIf="allImages.length == 0">
+    <img src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?size=338&ext=jpg" />
+  </div>
+</ion-content>
