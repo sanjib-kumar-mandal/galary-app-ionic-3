@@ -13,12 +13,47 @@ export class HomePage {
 
   viewMode: string = 'grid';
   dbObject: SQLiteObject;
-  allImages: any[] = [];
+  filter: any = {
+    filterView: false,
+    filters: {
+      text: '',
+      sort: 'date',
+      order: 'asc'
+    }
+  }
+  filteredImages: any[] = [];
+  allImages: any[] = [
+    {
+      pid: 1,
+      image: 'https://picsum.photos/id/237/536/354',
+      caption: 'here I Am',
+      added_at: '2020-10-08T21:47:00+05:30'
+    },
+    {
+      pid: 2,
+      image: 'https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png',
+      caption: 'Seperate me',
+      added_at: '2020-09-08T21:47:00+05:30'
+    },
+    {
+      pid: 3,
+      image: 'https://www.publicdomainpictures.net/pictures/320000/nahled/background-image.png',
+      caption: 'collection added',
+      added_at: '2020-11-08T21:47:00+05:30'
+    },
+    {
+      pid: 4,
+      image: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg',
+      caption: 'freak show',
+      added_at: '2020-07-08T21:47:00+05:30'
+    },
+  ];
 
   constructor(private navCtrl: NavController,private db: DatabaseProvider, private alertCtrl: AlertController) {}
 
-  ngOnInit(){
-    this.getAllImages();
+  async ngOnInit(){
+    await this.getAllImages();
+    this.filterInstade();
   }
 
   // get all images that are saved
@@ -41,6 +76,32 @@ export class HomePage {
       alert.present();
     })
   }
+
+  // filter here
+  filterInstade(){
+    // when no data found
+    if(this.allImages.length == 0){
+      return;
+    }
+    let filteredData = [];
+    // filter by text
+    let searchText = this.filter.filters.text.toLowerCase();
+    filteredData = searchText ? this.allImages.filter(function(cations) {return cations.caption.toLowerCase().includes(searchText);}) : this.allImages;
+    // sorting
+    let sortBy = this.filter.filters.sort; // which field is sorting
+    let orderBy = this.filter.filters.order; // in which order
+    switch (orderBy){
+      case 'asc':
+        this.filteredImages = filteredData.sort((a, b) => (a[sortBy] > b[sortBy]) ? 1 : -1);
+        break;
+      case 'desc':
+        this.filteredImages = filteredData.sort((a, b) => (a[sortBy] > b[sortBy]) ? -1 : 1);
+        break;
+      default:
+        this.filteredImages = filteredData;
+        break;
+    }
+  }
   // delete selected image
   deleteImage(index){
     let imageId = this.allImages[index].pid;
@@ -56,6 +117,13 @@ export class HomePage {
   // format date
   dateFormater(date, format){
     return moment(date).format(format);
+  }
+  // when pull refresh cals
+  doRefresh(refresher) {
+    this.getAllImages();
+    setTimeout(() => {
+      refresher.complete();
+    }, 2000);
   }
   // page targettings
   toAddImage(){

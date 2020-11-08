@@ -2,18 +2,43 @@
   <ion-toolbar color="white">
     <ion-title color="appprimary">Galary</ion-title>
     <button ion-button icon-only menuToggle right (click)="toAddImage()"><ion-icon name="add-circle" role="img"></ion-icon></button>
-    <button ion-button icon-only menuToggle right (click)="viewMode = (viewMode == 'grid') ? 'list' : 'grid'"><ion-icon name="grid" role="img"></ion-icon></button>
-    <button ion-button icon-only menuToggle right (click)="viewMode = (viewMode == 'grid') ? 'list' : 'grid'"><ion-icon name="list" role="img"></ion-icon></button>
+    <button ion-button icon-only menuToggle right (click)="viewMode = 'grid'"><ion-icon name="grid" role="img"></ion-icon></button>
+    <button ion-button icon-only menuToggle right (click)="viewMode = 'list'"><ion-icon name="list" role="img"></ion-icon></button>
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <!-- Search box -->
+  <div class="inputBox" *ngIf="allImages.length > 0">
+    <div>
+      <ion-icon name="search"></ion-icon>
+      <input type="text" placeholder="Search captions..." [(ngModel)]="filter.filters.text" (keyup)="filterInstade()"/>
+    </div>
+    <ion-icon [name]="filter.filterView ? 'close' : 'options'" (click)="filter.filterView = !filter.filterView"></ion-icon>
+  </div>
+  <!-- Filter here -->
+  <div class="filterHere" *ngIf="filter.filterView">
+    <div class="fields">
+      <h1>Sort By</h1>
+      <div class="sigleField" (change)="filterInstade()">
+        <label><input type="radio" name="radGrpTwo" value="added_at" [(ngModel)]="filter.filters.sort"/><p>Date</p></label>
+        <label><input type="radio" name="radGrpTwo" value="caption" [(ngModel)]="filter.filters.sort"/><p>Caption</p></label>
+      </div>
+    </div>
+    <div class="fields">
+      <h1>Order by</h1>
+      <div class="sigleField" (change)="filterInstade()">
+        <label><input type="radio" name="radGrpOne" value="asc" [(ngModel)]="filter.filters.order"/><p>Asscending</p></label>
+        <label><input type="radio" name="radGrpOne" value="desc" [(ngModel)]="filter.filters.order"/><p>Descending</p></label>
+      </div>
+    </div>
+  </div>
   <!-- All Images in grid mode -->
-  <div class="images" *ngIf="allImages.length > 0 && viewMode == 'grid'">
-    <img *ngFor="let data of allImages" [src]="data.image" />
+  <div class="images" *ngIf="filteredImages.length > 0 && viewMode == 'grid'">
+    <img *ngFor="let data of filteredImages" [src]="data.image" />
   </div>
   <!-- All images in list -->
-  <ion-list *ngIf="allImages.length > 0 && viewMode == 'list'">
-    <ion-item *ngFor="let data of allImages; let i = index">
+  <ion-list *ngIf="filteredImages.length > 0 && viewMode == 'list'">
+    <ion-item *ngFor="let data of filteredImages; let i = index">
       <ion-thumbnail item-start><img [src]="data.image"></ion-thumbnail>
       <h2>{{data.caption}}</h2>
       <p>{{dateFormater(data.added_at, 'll')}}</p>
@@ -21,7 +46,10 @@
     </ion-item>
   </ion-list>
   <!-- No images found -->
-  <div class="noImage" *ngIf="allImages.length == 0">
+  <div class="noImage" *ngIf="filteredImages.length == 0">
     <img src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?size=338&ext=jpg" />
   </div>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>
