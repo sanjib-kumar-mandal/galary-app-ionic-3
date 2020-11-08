@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SQLiteObject } from '@ionic-native/sqlite';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, NavController, Slides } from 'ionic-angular';
 import moment from 'moment';
 import { DatabaseProvider } from '../../providers/database/database';
 import { AboutPage } from '../about/about';
@@ -11,7 +11,8 @@ import { AboutPage } from '../about/about';
 })
 export class HomePage {
 
-  viewMode: string = 'grid';
+  @ViewChild(Slides) slides: Slides;
+  viewMode: string = 'slide';
   dbObject: SQLiteObject;
   filter: any = {
     filterView: false,
@@ -22,32 +23,7 @@ export class HomePage {
     }
   }
   filteredImages: any[] = [];
-  allImages: any[] = [
-    {
-      pid: 1,
-      image: 'https://picsum.photos/id/237/536/354',
-      caption: 'here I Am',
-      added_at: '2020-10-08T21:47:00+05:30'
-    },
-    {
-      pid: 2,
-      image: 'https://www.talkwalker.com/images/2020/blog-headers/image-analysis.png',
-      caption: 'Seperate me',
-      added_at: '2020-09-08T21:47:00+05:30'
-    },
-    {
-      pid: 3,
-      image: 'https://www.publicdomainpictures.net/pictures/320000/nahled/background-image.png',
-      caption: 'collection added',
-      added_at: '2020-11-08T21:47:00+05:30'
-    },
-    {
-      pid: 4,
-      image: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__340.jpg',
-      caption: 'freak show',
-      added_at: '2020-07-08T21:47:00+05:30'
-    },
-  ];
+  allImages: any[] = [];
 
   constructor(private navCtrl: NavController,private db: DatabaseProvider, private alertCtrl: AlertController) {}
 
@@ -117,6 +93,18 @@ export class HomePage {
   // format date
   dateFormater(date, format){
     return moment(date).format(format);
+  }
+  // slider change
+  deleteFromSlide(){
+    let currentIndex = this.slides.getActiveIndex();
+    this.deleteImage(currentIndex);
+  }
+  slideChanged(){
+    let currentIndex = this.slides.getActiveIndex();
+    let img = document.getElementById("item_id_"+currentIndex).scrollIntoView();
+  }
+  changeSlideImage(index){
+    this.slides.slideTo(index, 500);
   }
   // when pull refresh cals
   doRefresh(refresher) {

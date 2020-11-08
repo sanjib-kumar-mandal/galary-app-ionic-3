@@ -2,7 +2,8 @@
   <ion-toolbar color="white">
     <ion-title color="appprimary">Galary</ion-title>
     <button ion-button icon-only menuToggle right (click)="toAddImage()"><ion-icon name="add-circle" role="img"></ion-icon></button>
-    <button ion-button icon-only menuToggle right (click)="viewMode = 'grid'"><ion-icon name="grid" role="img"></ion-icon></button>
+    <button ion-button icon-only menuToggle right (click)="viewMode = 'slide'"><ion-icon name="laptop" role="img"></ion-icon></button>
+    <button ion-button icon-only menuToggle right (click)="viewMode = 'grid'"><ion-icon name="apps" role="img"></ion-icon></button>
     <button ion-button icon-only menuToggle right (click)="viewMode = 'list'"><ion-icon name="list" role="img"></ion-icon></button>
   </ion-toolbar>
 </ion-header>
@@ -34,7 +35,7 @@
   </div>
   <!-- All Images in grid mode -->
   <div class="images" *ngIf="filteredImages.length > 0 && viewMode == 'grid'">
-    <img *ngFor="let data of filteredImages" [src]="data.image" />
+    <img *ngFor="let data of filteredImages" [src]="data.image" (click)="viewMode = 'slide'"/>
   </div>
   <!-- All images in list -->
   <ion-list *ngIf="filteredImages.length > 0 && viewMode == 'list'">
@@ -45,6 +46,29 @@
       <button ion-button clear icon-only item-end (click)="deleteImage(i)"><ion-icon name="trash" color="danger"></ion-icon></button>
     </ion-item>
   </ion-list>
+  <!-- Slide view -->
+  <div class="sliderView" *ngIf="filteredImages.length > 0 && viewMode == 'slide'">
+    <ion-slides (ionSlideDidChange)="slideChanged()" autoplay="3000" speed="500">
+      <ion-slide *ngFor="let data of filteredImages">
+        <img [src]="data.image" />
+        <div class="slideCation">
+          <p>{{data.caption}}</p>
+          <p>{{dateFormater(data.added_at, 'll')}}</p>
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <div class="options">
+      <div (click)="deleteFromSlide()">
+        <ion-icon name="trash" color="danger"></ion-icon>
+        <p>Delete</p>
+      </div>
+    </div>
+    <div class="slideImages">
+      <div class="allImages">
+        <img *ngFor="let data of filteredImages; let i = index" [id]="'item_id_'+i" (click)="changeSlideImage(i)" [src]="data.image" />
+      </div>
+     </div>
+  </div>
   <!-- No images found -->
   <div class="noImage" *ngIf="filteredImages.length == 0">
     <img src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?size=338&ext=jpg" />

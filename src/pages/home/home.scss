@@ -104,6 +104,66 @@ page-home {
             }
         }
     }
+    .sliderView{
+        .slideCation{
+            background: $color-white;
+            padding: 10px;
+            margin-top: -10px;
+            p{
+                text-align: left;
+                margin: 0;
+                &:nth-child(1){
+                    @include normalText(22px);
+                }
+                &:nth-child(2){
+                    @include normalText(16px);
+                    margin-top: 7px;
+                }
+            }
+        }
+        .slideImages{
+            height: 60px;
+            padding: 5px 15px;
+            background: $color-white;
+            overflow-y: hidden;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            .allImages{
+                display: flex;
+                overflow-x: scroll;
+                width: 100%;
+                height: 100%;
+                img{
+                    height: 100%;
+                    border-radius: 3px;
+                    margin-right: 5px;
+                }
+            }
+            ::-webkit-scrollbar {
+                display: none;
+              }
+        }
+        .options{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            div{
+                text-align: center;
+                ion-icon{
+                    font-size: 30px;
+                }
+                p{
+                    @include normalText(15px);
+                    text-transform: uppercase;
+                }
+                &:nth-child(1){
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
     .noImage{
         position: absolute;
         top: 50%;
