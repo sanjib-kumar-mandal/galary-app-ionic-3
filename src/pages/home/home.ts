@@ -37,7 +37,7 @@ export class HomePage {
         alert.present();
       })
     }).catch(() =>{
-      let alert = this.alertCtrl.create({title: 'Could not find place',subTitle: 'Could not find any place where we saved the images.',buttons: ['Dismiss']});
+      let alert = this.alertCtrl.create({title: 'Could not find place',subTitle: 'Could not find any place.',buttons: ['Dismiss']});
       alert.present();
     })
   }
